@@ -156,7 +156,7 @@ def room3(duck_obtained, player, move):
             print("You see a door at the end of the room.")
             move = input("Do you run to it YES or NO?: ")
             if move == "yes":
-                return 6
+                return 7
             if move == "no":
                 return 3
             else:
@@ -197,16 +197,16 @@ def room5(move):
     
 
 
-
+#VC 6th room
 def room6(move):
     while True:
         print("You walk into a completely black room. The walls are covered in empty picture frames, but from the corner of your eye you see entities in the frames. They are gone by the time you turn your head, and you feel yourself slowly spiraling.")
+        move = input("You keep walking through, and feel familiarity to the empty picture frames. It's almost as if you've already been here, but you haven't. Soon you reach the end to a wet blue door. Will you go through it? YES or NO?: ")
+        if move == "yes":
+            return 3
+        if move == "no":
+            return 6        
         
-        
-        
-
-    
-
 
 
  #SP 7th room   
