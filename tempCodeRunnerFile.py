@@ -1,0 +1,1 @@
+room10(move)
