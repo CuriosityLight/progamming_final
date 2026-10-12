@@ -79,10 +79,10 @@ def inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_ob
 
 
 
-
+lost_attack = 0
 
 # Kc, fighting
-def clock_attack(player, clock_enemy, fight_enemy, fight_turn):
+def clock_attack(player, clock_enemy, fight_enemy, fight_turn, lost_attack):
     print("What is that...?")
     print("You glare at the clock figure as its shadow closes in and the ticking grows louder. It is a familiar sensation, yet you know you have never experienced something like this before.")
     print("It Attacks.")
@@ -90,6 +90,8 @@ def clock_attack(player, clock_enemy, fight_enemy, fight_turn):
     while True:
         if player["sanity"] == 0:
             print("Insanity took your life.")
+            lost_attack = 1
+            return
         print("HP:", player["hp"])
         print("SANITY: ", player["sanity"])
         fight_enemy = rand.choice(fight_choices)
@@ -132,7 +134,7 @@ def clock_attack(player, clock_enemy, fight_enemy, fight_turn):
                 player["sanity"] -= 20
             
 
-# Kc, bug fixing and helping everyone
+# Kc, bug fixing and helping everyone and doing fixing many many issues
 
 
 #VC storyline/instructions
@@ -143,44 +145,69 @@ Your job now is to find a way out through exploring the structure.
 
 #SP first room
 def room1(move):
+    print("You look in front of you and there is only one door. You open it and hiding behind it you find a long, spiral staircase.")
     while True:
         time.sleep(1)
-        print("You look in front of you and there is only one door. You open it and hiding behind it you find a long, spiral staircase.")
-        while True:
-            move = input("Do you want to go UP the stairs or DOWN the stairs?: ").lower().strip()
-            if move == "up":
-                return 2
-            elif move == "down":
-                return 10    
-            elif move == "item":
-                inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
-            else:
-                print("That is not a choice, choose UP or DOWN: ")
+        move = input("Do you want to go UP the stairs or DOWN the stairs?: ").lower().strip()
+        if move == "up":
+            return 2
+        elif move == "down":
+            return 10    
+        elif move == "item":
+            inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
+        else:
+            print("That is not a choice, choose UP or DOWN: ")
 
-    
+three_four = 0
 #SP second choice
 def room2(move):
-    while True:
+    if three_four > 2:
+        print("You remembered you shoulve seen two different doors, one was BLACK and from it hangs a single, empty picture frame. The second one wouldve been PINK, its paint would bee slowly yellowing and peeling off.")
+    else:
         print("You find two different doors, one is BLACK and from it hangs a single, empty picture frame. The second one is PINK, its paint slowly yellowing and peeling off.")
-        move = input("Which door do you enter?: ").lower().strip()
-        if move == "pink":
-            return 4
-        elif move == "black":
-            return 6
-        elif move == "back":
-            return 1
-        elif move == "item":
-                inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
+    while True:
+        time.sleep(1)
+        if three_four == 3:
+            print("seems like the pink door disapeared from the last time you went there")
+            move = input("go back to the PINK door or go BACK to the first room or ITEM")
+            if move == "pink":
+                return 4
+            elif move == "back":
+                return 1
+            elif move == "item":
+                    inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
+        
+        elif three_four == 4:
+            print("seems like the black door disapeared from the last time you went there")
+            move = input("go back to the BLACK door or go BACK to the first room or ITEM")
+            if move == "black":
+                return 6
+            elif move == "back":
+                return 1
+            elif move == "item":
+                    inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
         else:
-            print("That is not a valid choice, pick PINK or BLACK:")
+            move = input("Which door do you enter, PINK or BLACK, or BACK, or ITEM?: ").lower().strip()
+            if move == "pink":
+                return 4
+            elif move == "black":
+                return 6
+            elif move == "back":
+                return 1
+            elif move == "item":
+                    inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
+            else:
+                print("That is not a valid choice, pick PINK or BLACK:")
         
     
 
 #VC third choice
-def room3(duck_obtained, player, move):
+def room3(duck_obtained, player, move, three_four):
+    three_four = 3
+    print("You walk in and the stench of chlorine hits you like a truck. You feel your forehead getting damp and itchy with sweat, and see strange circular pools all over the cold, tiled floor. In the central pool you spot a rubber duck.")
     while True:
         if duck_obtained == 0:
-            print("You walk in and the stench of chlorine hits you like a truck. You feel your forehead getting damp and itchy with sweat, and see strange circular pools all over the cold, tiled floor. In the central pool you spot a rubber duck.")
+            time.sleep(1)
             move = input("Do you pick up the rubber duck YES or NO?: ").lower().strip()
             if move == "yes":
                 player["inventory"].append("duck")
@@ -188,26 +215,29 @@ def room3(duck_obtained, player, move):
                 print("You got a duck, quack!")
             elif move == "no":
                 print("You left the duck...sad")
-            elif move == "item":
-                inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
             else:
                 print("That is not an answer, pick YES or NO: ")
         else:
             print("You see a door at the end of the room.")
-            move = input("Do you run to it YES or NO?: ")
+            time.sleep(1)
+            move = input("Do you run to it YES or BACK, or (INV)entory?: ")
             if move == "yes":
                 return 7
-            if move == "no":
-                return 3
+            if move == "back":
+                return 2
+            elif move == "inv":
+                inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
             else:
                 print("That is not a valid choice, pick YES or NO: ")
 
 
 #SP 4th room
-def room4(bow_obtained, move):
+def room4(bow_obtained, move, player, three_four):
+    print("You walk into a room that is filled with plushies and love..? The lightbulbs glow and you feel warm inside. There is a large pink bow in the middle of the room.")
+    three_four = 4
     while True:
         if bow_obtained == 0:
-            print("You walk into a room that is filled with hello kitty plushies and love. The lightbulbs glow and you feel warm inside. There is a large pink bow in the middle of the room.")
+            time.sleep(1)
             move = input("Do you pick up the bow YES or NO?: ").lower().strip()
             if move == "yes":
                 player["inventory"].append("bow")
@@ -215,35 +245,39 @@ def room4(bow_obtained, move):
                 print("You got a bow!")
             elif move == "no":
                 print("You left the bow behind...")
-            elif move == "item":
-                inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
             else:
                 print("That is not a valid choice, pick YES or NO: ")
         else:
             print("You stay at this strange yet comforting place for a while, and then you see a door.")
-            move = input("Do you want to go through the door? YES or NO?: ")
+            time.sleep(1)
+            move = input("Do you want to go through the door? YES or BACK, or (INV)entory?: ")
             if move == "yes":
                 return 7
             if move == "no":
-                return 4
+                return 2
+            elif move == "inv":
+                inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
             else:
                 print("That is not a valid choice, pick YES or NO: ")
 
 
 
 #VC 5th room
-def room5(move):
+def room5(move, lost_attack):
+    print("You walk into a room filled to the brim with clocks. Big clocks, small clocks. Clocks that tick backwards and three steps at a time...")
     while True:
-     print("You walk into a room filled to the brim with clocks. Big clocks, small clocks. Clocks that tick backwards and three steps at a time...")
-     move = input("As you keep walking through, you see a door at the end. It looks plain and old. Will you go through? YES or NO?: ")
-     if move == "yes":
-         return 8
-     if move == "no":
-         return 5
-     elif move == "item":
-        inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
-     else:
-        print("That is not a valid choice, pick YES or NO: ")
+        clock_attack(player, clock_enemy, fight_enemy, fight_turn, lost_attack)
+        if lost_attack == 1:
+            return 12
+        move = input("As you keep walking through, you see a door at the end. It looks plain and old. Will you go through? YES or BACK or ITEM?: ")
+        if move == "yes":
+            return 8
+        if move == "back":
+            return 7
+        elif move == "item":
+           inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
+        else:
+            print("That is not a valid choice, pick YES or NO: ")
 
 
 
@@ -251,14 +285,17 @@ def room5(move):
 
 #VC 6th room
 def room6(move):
+    print("You walk into a completely black room. The walls are covered in empty picture frames, but from the corner of your eye you see entities in the frames. They are gone by the time you turn your head and you feel yourself slowly spiraling.")
+    time.sleep(1.5)
+    print("You keep walking through, and feel familiarity to the picture frames. It's almost as if you've already been here, but you haven't. Soon you reach the end, and are met with a blue door stained from moisture.")
     while True:
-        print("You walk into a completely black room. The walls are covered in empty picture frames, but from the corner of your eye you see entities in the frames. They are gone by the time you turn your head and you feel yourself slowly spiraling.")
-        move = input("You keep walking through, and feel familiarity to the picture frames. It's almost as if you've already been here, but you haven't. Soon you reach the end, and are met with a blue door stained from moisture. Will you go through it? YES or NO?: ")
+        time.sleep(1)
+        move = input("Will you go through it? YES or BACK or (INV)entory?: ") .strip() .lower()
         if move == "yes":
             return 3
         elif move == "no":
             return 6   
-        elif move == "item":
+        elif move == "inv":
                 inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)  
         else:
                 print("That is not a valid choice, pick YES or NO: ")
@@ -269,9 +306,10 @@ def room6(move):
 
  #SP 7th room   
 def room7(move, key1_obtained, player,):
+    print("You walk through a hallway and see a door, but not before spotting a damaged clock and its weak, marching ticks. Something glistens under the clock. You crouch down to look, and see something small.")
     while True:
+        time.sleep(1)
         if key1_obtained == 0:
-            print("You walk through a hallway and see a door, but not before spotting a damaged clock and its weak, marching ticks. Something glistens under the clock. You crouch down to look, and see something small.")
             move = input("Do you pick up the item YES or NO?: ").lower().strip()
             if move == "yes":
                 player["inventory"].append("key 1")
@@ -279,47 +317,51 @@ def room7(move, key1_obtained, player,):
                 print("You found a key! To what it leads is a mystery...")
             elif move == "no":
                 print("You left the item behind, I wonder what it was.")
-            elif move == "item":
-                inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
             else:
                 print("That is not a valid choice, pick YES or NO:")
         else:
             print("Moving on from the clock, you run into the door.")
-            move = input("Do you want to go through the door? YES or NO?: ")
+            time.sleep(1)
+            move = input("Do you want to go through the door? YES or BACK or (INV)entory?: ") .lower() .strip()
             if move == "yes":
                 return 5
-            if move == "no":
-                if key1_obtained:
-                    return 7
+            elif move == "back":
+                if three_four == 3:
+                    return 3
+                if three_four == 4:
+                    return 4
+            elif move == "inv":
+                inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
             else:
-                print("That is not a valid choice, pick YES or NO: ")
+                print("That is not a valid choice, pick YES or NO or ITEM: ")
 
 
     
 #VC 8th room
 def room8(move, key2_obtained, player,):
+    print("You walk through to see a nearly endless hallway leading down to a single door. A wilting plant sits askew beside the the left corner of the hallway. A gray, dusty object under the pot catches your eye.")
     while True:
         if key2_obtained == 0:
-            print("You walk through to see a nearly endless hallway leading down to a single door. A wilting plant sits askew beside the the left corner of the hallway. A gray, dusty object under the pot catches your eye.")
-            move = input("Do you pick up the object YES or NO?: ")
+            time.sleep(1)
+            move = input("Do you pick up the object YES or NO?: ") .lower() .strip()
             if move == "yes":
                 player["inventory"].append("key 2")
                 key2_obtained += 1
                 print("You got a key! To what it leads is a mystery...")
             elif move == "no":
                 print("You walked past the plant without looking.")
-            elif move == "item":
-                inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
             else:
                 print("That is not a valid choice, pick YES or NO: ")
         else:
             print("Moving with haste through the hallway, you finally meet the door.")
-            move = input("Do you go through this door? YES or NO?: ")
+            time.sleep(1)
+            move = input("Do you go through this door? YES or BACK or (INV)entory?: ") .lower() .strip()
             if move == "yes":
                 return 9
-            if move == "no":
-                if key2_obtained:
-                     return 8
+            elif move == "back":
+                return 5
+            elif move == "inv":
+                inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
             else:
                 print("That is not a valid choice, pick YES or NO: ")
 
@@ -329,13 +371,14 @@ def room8(move, key2_obtained, player,):
 #VC 9th room   
 def room9(move):
     print("You stumble into a room completely covered in marble. The light is blinding, but you can't find its source.")
-    move = input("Do you proceed? YES or NO or ITEM: ")
+    time.sleep(1)
+    move = input("Do you proceed? YES or BACK or (INV)entory: ") .lower().strip()
     if move == "yes":
         print("You've successfully escaped...or have you?")
         return 11
-    elif move == "no":
+    elif move == "back":
         return 8
-    elif move == "item":
+    elif move == "inv":
         inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
     else:
         print("That is not a valid choice, pick YES or NO: ")
@@ -345,28 +388,29 @@ def room9(move):
   #SP room 10th      
 def room10(move):
     print("You walk into a dingy hallway. Its yellow and blue wallpaper would have been beautiful if it weren't for a mold infestation. It seems like this was last visited by a human eons ago, and the fluorescent lights flicker and turn off at unpredictable intervals...")
-    move = input("You see a door that is oddly in pristine condition, powder white with cerulean tiles surrounding its perimeter. Do you go in?: ")
-    if move == "YES":
-        return 3
-    elif move == "NO":
-        return 1
-    else:
-        print("That is not a valid choice, pick YES or NO: ")
-    if move == "item":
-        inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
+    while True:
+        time.sleep(2)
+        move = input("You see a door that is oddly in pristine condition, powder white with cerulean tiles surrounding its perimeter. Do you go in, YES or BACK or (INV)entory?: ") .upper() .strip()
+        if move == "YES":
+            return 3
+        elif move == "NO":
+            return 1
+        elif move == "INV":
+            inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
+        else:
+            print("That is not a valid choice, pick YES or NO: ")
 
 
+# KC the read and write stuff
 with open ("read_write.txt","r") as file: 
     content = file.read().split(",")
     wins = int(content[0])
     losses = int(content[1])
 print("wins:", wins, "losses:", losses)
 
-won = 0
 # kc, the thing that calls all the functions
 while True:
-    if won == 1:
-        exit()
+
     with open ("read_write.txt","r") as file: 
         content = file.read().split(",")
         wins = int(content[0])
@@ -383,9 +427,9 @@ while True:
     elif current_room == 2:
         current_room = room2(move)
     elif current_room == 3:
-        current_room = room3(duck_obtained, player, move)
+        current_room = room3(duck_obtained, player, move, three_four)
     elif current_room == 4:
-        current_room = room4(bow_obtained, move)
+        current_room = room4(bow_obtained, move, player, three_four)
     elif current_room == 5:
         current_room = room5(move)
     elif current_room == 6:
@@ -399,12 +443,18 @@ while True:
     elif current_room == 10:
         current_room = room10(move)
     elif current_room == 11:
-            win += 1
-            won += 1
+        wins += 1
+        with open("read_write.txt", "w") as file2:
+            file2.write(str(wins))
+        with open("read_write.txt", "a") as file2:
+            file2.write(",")
+            file2.write(str(losses))
+        break
     elif current_room == 12:
         losses += 1
-    with open("read_write.txt", "w") as file2:
-        file2.write(str(wins))
-    with open("read_write.txt", "a") as file2:
-        file2.write(",")
-        file2.write(str(losses)) 
+        with open("read_write.txt", "w") as file2:
+            file2.write(str(wins))
+        with open("read_write.txt", "a") as file2:
+            file2.write(",")
+            file2.write(str(losses))
+        break
