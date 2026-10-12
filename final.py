@@ -178,7 +178,8 @@ def room4(bow_obtained, move,):
             else:
                 print("That is not a valid choice, pick YES or NO:")
         else:
-            print(" you see a door.")
+            print("you see a door.")
+            move = input("Do you want to go through the door? YES or NO?: ")
             if move == "yes":
                 return 7
             if move == "no":
@@ -187,6 +188,11 @@ def room4(bow_obtained, move,):
 def room5(move):
     while True:
      print("You walk into a room filled to the brim with clocks. Big clocks, small clocks. Clocks that tick backwards and three steps at a time...")
+     move = input("As you keep walking through, you see a door at the end. It looks plain and old. Will you go through? YES or NO?: ")
+     if move == "yes":
+         return 8
+     if move == "no":
+         return 5
 
     
 
@@ -207,7 +213,7 @@ def room6(move):
 def room7(move, key1_obtained, player,):
     while True:
         if key1_obtained == 0:
-            print("You walk through a hallway and see two more doors and a damaged clock. Something glistens under the clock. You crouch down to look, and see it's some sort of key.")
+            print("You walk through a hallway and see a door with a damaged clock on the front. Something glistens under the clock. You crouch down to look, and see it's some sort of key.")
             move = input("Do you pick up the key YES or NO?:").lower().strip()
             if move == "yes":
                 player["inventory"].append("key 1")
@@ -218,13 +224,13 @@ def room7(move, key1_obtained, player,):
             else:
                 print("That is not a valid choice, pick YES or NO:")
         else:
-            print("Moving on from the clock, you run into the two doors. One is YELLOW and the other is BLUE.")
-            move = input(" do you want to go through the YELLOW door or the BLUE door?")
-            if move == "BLUE":
-                return 3
-            if move == "YELLOW":
+            print("Moving on from the clock, you run into the door.")
+            move = input(" do you want to go through the door? YES or NO?: ")
+            if move == "yes":
+                return 5
+            if move == "no":
                 if key1_obtained:
-                    return 5
+                    return 7
             
     
 #VC 8th room
@@ -233,7 +239,22 @@ def room8(move, key2_obtained, player,):
         if key2_obtained == 0:
             print("You walk through to see a big hallway leading down to a door. A plant sits beside the the left corner of the hallway. Something shiny under the plant catches your eye. You get closer and see a key.")
             move = input("Do you pick up the key, YES or NO?:")
-            if move
+            if move == "yes":
+                player["inventory"].append("key 2")
+                key2_obtained += 1
+                print("You got a key! To what it leads is a mystery...")
+            elif move == "no":
+                print("You left the key behind.")
+            else:
+                print("That is not a valid choice, pick YES or NO:")
+        else:
+            print("Moving on from the clock, you run into the door.")
+            move = input(" do you want to go through the door? YES or NO?: ")
+            if move == "yes":
+                return 9
+            if move == "no":
+                if key2_obtained:
+                     return 8
 
     
 #VC 9th room
@@ -273,3 +294,4 @@ while True:
         current_room = room9()
     elif current_room == 10:
         current_room = print("you escaped, at last.")
+        
