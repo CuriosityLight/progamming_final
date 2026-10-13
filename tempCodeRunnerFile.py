@@ -1,1 +1,1 @@
-room10(move)
+.lower().strip()
