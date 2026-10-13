@@ -59,15 +59,24 @@ def inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_ob
             else:
                 print("You held the bow and remembered your childhood.")
                 time.sleep(1)
-                print("~childhood....~")
+                print("childhood....")
                 time.sleep(1)
                 player["sanity"] += 20
                 print("SANITY went up!")
                 print("sanity levels: ", player["sanity"])
+        elif inventory_grab == "get out of my head":
+            while True:
+                print("get out of my head")
         elif inventory_grab == "key 1":
-            print("It is a key, it most likely unlocks a lock")
+            if key1_obtained == 1:
+                print("It is a key, it most likely unlocks a lock")
+            else:
+                print("You don't have that item")
         elif inventory_grab == "key 2":
-            print("It is a key, maybe it could unlock a certain place...")
+            if key2_obtained == 1:
+                print("It is a key, maybe it could unlock a certain place...")
+            else:
+                print("You don't have that item.")
         else:
             print("You do not have that item.")
     elif inventory_look == "no":
@@ -134,7 +143,7 @@ def clock_attack(player, clock_enemy, fight_enemy, fight_turn, lost_attack):
                 player["sanity"] -= 20
             
 
-# Kc, bug fixing and helping everyone and doing fixing many many issues
+# Kc, bug fixing and helping everyone and doing fixing many many issues. also doing tiny changes to everything.
 
 
 #VC storyline/instructions
@@ -148,12 +157,12 @@ def room1(move):
     print("You look in front of you and there is only one door. You open it and hiding behind it you find a long, spiral staircase.")
     while True:
         time.sleep(1)
-        move = input("Do you want to go UP the stairs or DOWN the stairs?: ").lower().strip()
+        move = input("Do you want to go UP the stairs or DOWN the stairs, or (INV)entory?: ").lower().strip()
         if move == "up":
             return 2
         elif move == "down":
             return 10    
-        elif move == "item":
+        elif move == "inv":
             inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
         else:
             print("That is not a choice, choose UP or DOWN: ")
@@ -388,17 +397,43 @@ def room9(move):
   #SP room 10th      
 def room10(move):
     print("You walk into a dingy hallway. Its yellow and blue wallpaper would have been beautiful if it weren't for a mold infestation. It seems like this was last visited by a human eons ago, and the fluorescent lights flicker and turn off at unpredictable intervals...")
+    print("You see a door that is oddly in pristine condition, powder white with cerulean tiles surrounding its perimeter.")
     while True:
         time.sleep(2)
-        move = input("You see a door that is oddly in pristine condition, powder white with cerulean tiles surrounding its perimeter. Do you go in, YES or BACK or (INV)entory?: ") .upper() .strip()
-        if move == "YES":
+        move = input(" Do you go in, YES or BACK or (INV)entory?: ") .lower() .strip()
+        if move == "yes":
             return 3
-        elif move == "NO":
+        elif move == "no":
             return 1
         elif move == "INV":
             inventory_item(inventory_look, inventory_grab, player, duck_obtained, bow_obtained)
         else:
-            print("That is not a valid choice, pick YES or NO: ")
+            print("That is not a valid choice, pick YES or NO or (INV)entory: ")
+
+
+fun_again = ""
+fun = 0
+def totally_not_the_gambling_room(fun, fun_again, player):
+    while True:
+        fun_again = input("play?") .strip() .lower()
+        if fun_again == "yes":
+            fun = rand.randint(1,2)
+            if fun == 1:
+                print("you won!")
+                print("SANITY UP")
+                player["sanity"] += 20
+            if fun == 2:
+                print("you lost...")
+                print("SANITY down")
+                player["sanity"] -= 20
+        elif fun_again == "no":
+            return 1
+        else:
+            print("yes or no")
+        
+
+
+
 
 
 # KC the read and write stuff
