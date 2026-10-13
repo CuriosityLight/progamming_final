@@ -114,7 +114,6 @@ def clock_attack(player, clock_enemy, fight_enemy, fight_turn, lost_attack, atta
             return
         if clock_enemy["hp"] <= 0:
             print("The clockwork finally faltered.")
-
             return
         print("??? HP:", clock_enemy["hp"])
         print("HP:", player["hp"])
@@ -331,6 +330,7 @@ def room5(move, lost_attack):
     while True:
         if attack_won == 0:
             clock_attack(player, clock_enemy, fight_enemy, fight_turn, lost_attack, attack_won)
+            attack_won = 1
         else:
             if lost_attack == 1:
                 return 12
